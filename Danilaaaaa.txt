@@ -1,0 +1,58 @@
+Создаём базу данных.
+
+Таблица пользователи
+
+CREATE TABLE IF NOT EXISTS users (
+    userID INT AUTO_INCREMENT PRIMARY KEY,
+    fio VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    login VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    type VARCHAR(50) NOT NULL
+);
+
+Таблица клиенты
+
+CREATE TABLE IF NOT EXISTS clients (
+    clientID INT AUTO_INCREMENT PRIMARY KEY,
+    fio VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    userID INT NOT NULL,
+    FOREIGN KEY (userID) REFERENCES users(userID)
+);
+
+Таблица мастеры
+
+CREATE TABLE IF NOT EXISTS master (
+    masterID INT AUTO_INCREMENT PRIMARY KEY,
+    fio VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL
+);
+
+Таблица Заявки
+
+CREATE TABLE IF NOT EXISTS applications (
+    requestID INT AUTO_INCREMENT PRIMARY KEY,
+    startDate DATE NOT NULL,
+    computerTechType VARCHAR(255) NOT NULL,
+    computerTechModel VARCHAR(255) NOT NULL,
+    problemDescription TEXT NOT NULL,
+    requestStatus VARCHAR(50) NOT NULL,
+    completionDate DATE,
+    repairParts TEXT,
+    masterID INT NOT NULL,
+    clientID INT NOT NULL,
+    FOREIGN KEY (masterID) REFERENCES master(masterID),
+    FOREIGN KEY (clientID) REFERENCES clients(clientID)
+);
+
+Таблица коментарии
+
+CREATE TABLE IF NOT EXISTS comments (
+    comment_ID INT AUTO_INCREMENT PRIMARY KEY,
+    message TEXT NOT NULL,
+    masterID INT NOT NULL,
+    requestID INT NOT NULL,
+    FOREIGN KEY (masterID) REFERENCES master(masterID),
+    FOREIGN KEY (requestID) REFERENCES applications(requestID)
+);
